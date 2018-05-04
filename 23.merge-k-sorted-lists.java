@@ -40,11 +40,16 @@ class Solution {
         }else if(lists.length == 1){
             return lists[0];
         }else{
-            ListNode result = lists[0];
-            for(int i = 1; i < lists.length; i++){
-                result = mergeTwoLists(result, lists[i]);
+            for(int steps = 1; steps < lists.length; steps = steps * 2){
+                for(int i = 0; i < lists.length; i = i + 2*steps){
+                    if(i + steps >= lists.length){
+                        continue;
+                    }else{
+                        lists[i] = mergeTwoLists(lists[i], lists[i + steps]);
+                    }
+                }
             }
-            return result;
+            return lists[0];
         }
     }
 
