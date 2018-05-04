@@ -40,15 +40,11 @@ class Solution {
         }else if(lists.length == 1){
             return lists[0];
         }else{
-            ListNode result = new ListNode(0);
-            result.next = null;
-            ListNode current = result, temp = findMinimumNode(lists);
-            while(temp != null){
-                current.next = temp;
-                current = current.next;
-                temp = findMinimumNode(lists);
+            ListNode result = lists[0];
+            for(int i = 1; i < lists.length; i++){
+                result = mergeTwoLists(result, lists[i]);
             }
-            return result.next;
+            return result;
         }
     }
 
