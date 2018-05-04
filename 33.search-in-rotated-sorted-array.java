@@ -43,26 +43,18 @@ class Solution {
         int pivot = findPivot(nums);
 
         int left = 0, right = nums.length -1, mid = (left + right)/2;
-        while(true){
-            if(left == mid){
-                if(nums[convertIndex(nums.length, pivot, left)] == target){
-                    return convertIndex(nums.length, pivot, left);
-                }else if(nums[convertIndex(nums.length, pivot, right)] == target){
-                    return convertIndex(nums.length, pivot, right);
-                }else{
-                    return -1;
-                }
-            }
+        while(left <= right){
             if(target > nums[convertIndex(nums.length, pivot, mid)] ){
-                left = mid;
+                left = mid + 1;
                 mid = (left + right)/2;
             }else if(target < nums[convertIndex(nums.length, pivot, mid)] ){
-                right = mid;
+                right = mid -1;
                 mid = (left + right) / 2;
             }else{
                 return convertIndex(nums.length, pivot, mid);
             }
         }
+        return -1;
         
     }
     private int findPivot(int[] nums){
