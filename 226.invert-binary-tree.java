@@ -45,41 +45,44 @@
  */
 import java.util.Stack;
 class Solution {
-   static  class Record {
-            public TreeNode node;
-            public int count = 2;
-            public Record(TreeNode node) {
-                this.node = node;
-         }
-}
     public TreeNode invertTree(TreeNode root) {
-        Stack<Record> stack = new Stack<>();
-        if (root != null)
-            stack.push(new Record(root));
-        while (!stack.isEmpty()) {
-            Record record = stack.pop();
-            if (record.count == 2) {
-                record.count -= 1;
-                if (record.node.left != null) {
-                    stack.push(record);
-                    stack.push(new Record(record.node.left));
-                    continue;
+        if(root == null){
+            return null;
+        }
+
+        Stack<TreeNode> nodes = new Stack<TreeNode>();
+        TreeNode current = root;
+        nodes.push(current);
+        boolean isPopedNode = false;
+        while(!nodes.isEmpty()){
+            if(current.left != null && !isPopedNode){
+                nodes.push(current.left);
+                isPopedNode = false;
+                current = current.left;
+            }else if(current.right != null || isPopedNode){
+                TreeNode temp = current.left;
+                current.left = current.right;
+                current.right = temp;
+                nodes.pop();
+                if(current.left != null){
+                    nodes.push(current.left);
+                    current = current.left;
+                    isPopedNode = false;
+                }else{
+                    if(!nodes.isEmpty()){
+                        current = nodes.peek();
+                    }
+                    isPopedNode = true;
                 }
-            }
-            if (record.count == 1) {
-                record.count -= 1;
-                if (record.node.right != null) {
-                    stack.push(record);
-                    stack.push(new Record(record.node.right));
-                    continue;
+            }else{
+                nodes.pop();
+                if(!nodes.isEmpty()){
+                    current = nodes.peek();
                 }
-            }
-            if (record.count == 0) {
-                TreeNode tmp = record.node.left;
-                record.node.left = record.node.right;
-                record.node.right = tmp;
+                isPopedNode = true;
             }
         }
+
         return root;
     }
 }
